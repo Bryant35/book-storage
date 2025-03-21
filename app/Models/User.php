@@ -20,15 +20,15 @@ class User extends Authenticatable
 
     // Define the fillable attributes to protect against mass-assignment
     protected $fillable = [
-        'name', 
-        'username', 
-        'password'
+        'name',
+        'username',
+        'password',
     ];
 
     // Specify which attributes should be hidden (for security)
     protected $hidden = [
-        'password', 
-        'remember_token'
+        'password',
+        'remember_token',
     ];
 
     // Specify the attributes that should be cast to native types

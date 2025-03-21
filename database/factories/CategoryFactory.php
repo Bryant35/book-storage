@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CategoryFactory extends Factory
 {
@@ -14,7 +14,7 @@ class CategoryFactory extends Factory
     // Define the fake data
     public function definition()
     {
-        $faker = FakerFactory::create("id_ID");
+        $faker = FakerFactory::create('id_ID');
 
         return [
             'name' => $faker->word(),  // Random category name, e.g., "Technology"

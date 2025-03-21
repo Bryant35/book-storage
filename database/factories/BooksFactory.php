@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Authors;
 use App\Models\Books;
 use App\Models\Category;
-use App\Models\Authors;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BooksFactory extends Factory
 {

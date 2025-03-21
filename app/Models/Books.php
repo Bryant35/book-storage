@@ -6,23 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-    /**
-     * Model untukTable Books
-     * @var string
-     */
+/**
+ * Model untukTable Books
+ *
+ * @var string
+ */
 class Books extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $table = 'books';
 
     protected $primaryKey = 'book_id';
 
     protected $fillable = [
-        'category_id', 
-        'author_id', 
-        'title', 
-        'content'
+        'category_id',
+        'author_id',
+        'title',
+        'content',
     ];
 
     protected $casts = [
@@ -54,5 +55,4 @@ class Books extends Model
             ->pluck('name')  // Get an array of author names
             ->toArray();  // Convert it to an array
     }
-    
 }

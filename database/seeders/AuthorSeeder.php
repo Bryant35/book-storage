@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Authors;
+use Illuminate\Database\Seeder;
 
 class AuthorSeeder extends Seeder
 {

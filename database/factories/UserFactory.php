@@ -2,11 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Faker\Factory as FakerFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -20,8 +17,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        
-        $faker = FakerFactory::create('id_ID');   
+
+        $faker = FakerFactory::create('id_ID');
 
         return [
             'name' => $faker->name(),           // Nama dalam bahasa Indonesia

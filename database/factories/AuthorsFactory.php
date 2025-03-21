@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Authors;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Factory as FakerFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AuthorsFactory extends Factory
 {
@@ -14,7 +14,7 @@ class AuthorsFactory extends Factory
     // Define the fake data
     public function definition()
     {
-        $faker = FakerFactory::create("id_ID");
+        $faker = FakerFactory::create('id_ID');
 
         return [
             'name' => $faker->name(),  // Random author name, e.g., "John Doe"
