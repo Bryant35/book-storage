@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create("books", function (Blueprint $table) {
             $table->id("book_id");
             $table->unsignedBigInteger("category_id");
-            $table->unsignedBigInteger("author_id");
+            $table->json("author_id");
             $table->string("title");
             $table->string("content");
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign("category_id")->references("category_id")->on("category");
-            $table->foreign("author_id")->references("author_id")->on("authors");
+            // $table->foreign("author_id")->references("author_id")->on("authors");
         });
     }
 
