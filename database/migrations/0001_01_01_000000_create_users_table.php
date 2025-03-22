@@ -18,6 +18,7 @@ return new class extends Migration
             // $table->string('email')->unique();
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            // $table->enum('role', ['Admin', 'Editor', 'Reader'])->default('Reader');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -38,13 +39,14 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        DB::table('users')->insert([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'password' => bcrypt('admin'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // DB::table('users')->insert([
+        //     'name' => 'Admin',
+        //     'username' => 'admin',
+        //     'password' => bcrypt('admin'),
+        //     // 'role' => 'Admin',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
     }
 
     /**

@@ -50,6 +50,7 @@
                             </td>
 
                             {{-- Kategori Buku --}}
+                            
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                 {{ $book->category_name }}</td>
                             <form action="/book/edit" method="GET">
