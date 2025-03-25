@@ -26,8 +26,10 @@
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                             Kategori
                         </th>
+                        @role('admin' || 'editor')
                         <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Aksi
                         </th>
+                        @endrole
                     </tr>
                 </thead>
 
@@ -53,6 +55,8 @@
                             
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                 {{ $book->category_name }}</td>
+                                @role('admin' || 'editor')
+                            {{-- Tombol Edit --}}
                             <form action="/book/edit" method="GET">
                                 <input type="hidden" name="id" value="{{ $book->book_id }}">
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
@@ -60,6 +64,7 @@
                                         class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
                                         value="Edit">
                             </form>
+                            @endrole
                             </td>
                         </tr>
                     @endforeach
