@@ -12,5 +12,9 @@ Route::prefix('/validate')->group(function () {
 });
 
 Route::prefix('book')->group(function () {
-    Route::get('/edit', 'App\Http\Controllers\BookController@edit');
+    Route::get('/edit', 'App\Http\Controllers\BookController@bookEditView');
+});
+
+Route::prefix('/system')->group(function () {
+    Route::get('/home', 'App\Http\Controllers\BookController@index');
 });

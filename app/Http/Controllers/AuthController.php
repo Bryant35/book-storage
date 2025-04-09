@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Books;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,7 @@ class AuthController extends Controller
             }
             flash()->success('Login Berhasil!');
 
-            return view('dashboard.landing');
+            return redirect('/system/home');
         }
         // If the password is incorrect
         else {

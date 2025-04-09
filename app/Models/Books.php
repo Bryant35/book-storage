@@ -55,4 +55,38 @@ class Books extends Model
             ->pluck('name')  // Get an array of author names
             ->toArray();  // Convert it to an array
     }
+
+    /**
+     * Get all books with their details
+     *
+     * @return string
+     */
+    public static function getBooksWithDetails($perPage = 20)
+    {
+        // create join book and author and category
+        $books = Books::join('authors', 'books.author_id', '=', 'authors.author_id')
+            ->join('category', 'books.category_id', '=', 'category.category_id')
+            ->select('books.*', 'authors.name as author_name', 'category.name as category_name')
+            ->orderBy('books.title', 'asc');
+
+        $books = Books::with('category')  // Eager load category to avoid N+1 query
+        // add category name
+            ->join('category', 'books.category_id', '=', 'category.category_id')
+            ->select('books.*', 'category.name as category_name')
+            ->orderBy('title', 'asc');
+
+        return $books;
+    }
+
+    public static function getBookById($book_id)
+    {
+        // create join book and author and category
+        $book = Books::join('authors', 'books.author_id', '=', 'authors.author_id')
+            ->join('category', 'books.category_id', '=', 'category.category_id')
+            ->select('books.*', 'authors.name as author_name', 'category.name as category_name')
+            ->where('books.book_id', $book_id)
+            ->first();
+        dd($book);
+        return $book;
+    }
 }
