@@ -19,15 +19,13 @@
     <div class="flex bg-gray-100 text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
+            <h1 class="text-2xl font-bold mb-4">Buku oleh {{ $author->name }}</h1>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 {{-- Judul Tabel --}}
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                             Judul
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Penulis
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                             Kategori
@@ -49,23 +47,15 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                 {{ $book->title }}</td>
 
-                            {{-- Isi nama array penulis --}}
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                @foreach ($book->authors as $author)
-                                    {{ $author }}@if (!$loop->last)
-                                        ,
-                                    @endif
-                                @endforeach
-                            </td>
-
                             {{-- Kategori Buku --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                {{ $book->category_name }}</td>
+                                {{ $book->category->name }}</td>
                             @if (Auth::check() && Auth::user()->hasRole('Admin'))
                                 {{-- Tombol Edit --}}
                                 <form action="/book/edit" method="GET">
                                     @csrf
-                                    <input type="hidden" name="page" value="books">
+                                    <input type="hidden" name="page" value="book-by-author">
+                                    <input type="hidden" name="author_id" value="{{ $author->author_id }}">
                                     <input type="hidden" name="id" value="{{ $book->book_id }}">
                                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                         <input type="submit" name="edit"

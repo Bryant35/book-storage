@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>Book Lists</title>
+    <title>Author - View</title>
 
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
@@ -24,13 +23,10 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Judul
+                            Nama
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Penulis
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Kategori
+                            Liat Judul-Judul Buku
                         </th>
                         @if (Auth::check() && Auth::user()->hasRole('Admin'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
@@ -42,46 +38,45 @@
 
                 {{-- Isi Tabel --}}
                 <tbody class="divide-y divide-gray-200">
-                    @foreach ($books as $book)
+                    @foreach ($authors as $author)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
 
                             {{-- Judul Buku --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                                {{ $book->title }}</td>
-
-                            {{-- Isi nama array penulis --}}
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                @foreach ($book->authors as $author)
-                                    {{ $author }}@if (!$loop->last)
-                                        ,
-                                    @endif
-                                @endforeach
-                            </td>
+                                {{ $author->name }}</td>
 
                             {{-- Kategori Buku --}}
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                {{ $book->category_name }}</td>
-                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
-                                {{-- Tombol Edit --}}
-                                <form action="/book/edit" method="GET">
+                            <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                <form action="/author/book" method="GET">
                                     @csrf
-                                    <input type="hidden" name="page" value="books">
-                                    <input type="hidden" name="id" value="{{ $book->book_id }}">
-                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                    <input type="hidden" name="id" value="{{ $author->author_id }}">
+                                    <input type="submit" name="view"
+                                        class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
+                                        value="View Book">
+                                </form>
+                            </td>
+                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                    {{-- Tombol Edit --}}
+                                    <form action="/author/edit" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $author->author_id }}">
                                         <input type="submit" name="edit"
                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
                                             value="Edit">
-                                </form>
+                                    </form>
+                                </td>
                             @endif
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <div class="mt-3">
-                {{ $books->links() }}
+                {{-- Pagination --}}
+                {{ $authors->links() }}
             </div>
         </div>
     </div>
 </body>
+
 </html>

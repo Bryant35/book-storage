@@ -84,9 +84,15 @@ class Books extends Model
         $book = Books::join('authors', 'books.author_id', '=', 'authors.author_id')
             ->join('category', 'books.category_id', '=', 'category.category_id')
             ->select('books.*', 'authors.name as author_name', 'category.name as category_name')
+            ->orderBy('books.title', 'asc');
+
+        $book = Books::with('category')  // Eager load category to avoid N+1 query
+        // add category name
+            ->join('category', 'books.category_id', '=', 'category.category_id')
+            ->select('books.*', 'category.name as category_name')
             ->where('books.book_id', $book_id)
             ->first();
-        dd($book);
+
         return $book;
     }
 }

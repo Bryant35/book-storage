@@ -39,7 +39,7 @@ class AuthController extends Controller
             }
             flash()->success('Login Berhasil!');
 
-            return redirect('/system/home');
+            return redirect('/book/view');
         }
         // If the password is incorrect
         else {

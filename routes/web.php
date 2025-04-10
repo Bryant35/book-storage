@@ -12,9 +12,15 @@ Route::prefix('/validate')->group(function () {
 });
 
 Route::prefix('book')->group(function () {
+    Route::get('/view', 'App\Http\Controllers\BookController@index');
     Route::get('/edit', 'App\Http\Controllers\BookController@bookEditView');
+    // Route::get('/editForm', function(){
+    //     return view('book.edit-book');
+    // });
+    Route::post('/update', 'App\Http\Controllers\BookController@updateBook');
 });
 
-Route::prefix('/system')->group(function () {
-    Route::get('/home', 'App\Http\Controllers\BookController@index');
+Route::prefix('/author')->group(function () {
+    Route::get('/view','App\Http\Controllers\AuthorController@viewAuthor');
+    Route::get('/book','App\Http\Controllers\AuthorController@viewBookByAuthor');
 });

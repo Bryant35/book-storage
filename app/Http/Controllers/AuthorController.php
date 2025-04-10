@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Books;
+use App\Models\Authors;
+use App\Models\Category;
+use Couchbase\Role;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class AuthorController extends Controller
+{
+    //
+    use SoftDeletes, HasRoles, HasPermissions; 
+
+    public function viewAuthor(){
+        $authors = Authors::query()->paginate(20);
+
+        
+        return view("author.author", compact("authors"));
+    }
+
+    public function viewBookByAuthor(Request $req){
+        // $author = $req->query('author_id'); // get from URL
+        
+        $author = Authors::find($req->id);
+        
+        $books = Books::with('category')
+        ->whereJsonContains('author_id', (int)$author->author_id)
+        ->orderBy('title', 'asc')
+        ->paginate(20);
+
+        return view("author.book-by-author", compact("books", "author"));
+    }
+}

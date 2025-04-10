@@ -3,57 +3,147 @@
 namespace App\Http\Controllers;
 
 use App\Models\Books;
+use App\Models\Authors;
 use App\Models\Category;
 use Couchbase\Role;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookController extends Controller
 {
+    use HasRoles, HasPermissions, HasRoles;
+    use SoftDeletes;
+
     /**
      * Display a listing of the Books.
      */
     public function index()
     {
-
         $books = Books::getBooksWithDetails()->paginate(20);
-        
-        // // create join book and author and category
-        // $books = Books::join('authors', 'books.author_id', '=', 'authors.author_id')
-        //     ->join('category', 'books.category_id', '=', 'category.category_id')
-        //     ->select('books.*', 'authors.name as author_name', 'category.name as category_name')
-        //     ->orderBy('books.title', 'asc')
-        //     ->paginate(20);
-
-        // $books = Books::with('category')  // Eager load category to avoid N+1 query
-        // // add category name
-        //     ->join('category', 'books.category_id', '=', 'category.category_id')
-        //     ->select('books.*', 'category.name as category_name')
-        //     ->orderBy('title', 'asc')  // Optionally, order books by title
-        //     ->paginate(20);
     
-        // dd($books);
         if(Auth::check()){
-            // dd(Auth::user()->hasRole('Admin'));
             return view('book.books', compact('books'));
         }else{
             return view('welcome', compact('books'));
         }
     }
 
+    /**
+     * Show the form for editing the specified book.
+     * Fill the form with the choosen book data
+     */
     public function bookEditView(Request $req){
         $book_id = $req->input('id');
-
+        $page = $req->input('page');
+        $author_id = '';
+        if($req->input('author_id') != null){
+            $author_id = $req->input('author_id');
+        }
+        
         // Go To Model
         $book = Books::getBookById($book_id);
-        dd($book);
 
+        //Call all authors and categories
+        $authors = Authors::all();
+        $categories = Category::all();
+
+        //Validate user
         if(Auth::check()){
-            return view('book.edit', compact('book'));
+            return view('book.edit-book', compact('book', 'categories','authors', 'page', 'author_id'));
         }else{
-            return redirect('/system/home')->with('error', 'You do not have access to this page.');
+            return redirect('/book/view')->with('error', 'You do not have access to this page.');
+        }
+
+        //Has Permission edit book
+        // if (Auth::user()->can('edit book')) {
+        //     return view('book.edit-book', compact('book', 'categories','authors'));
+        // } else {
+        //     return redirect('/book/view')->with('error', 'You do not have access to this page.');
+        // }        
+    }
+
+    /**
+     * Update the specified book 
+     */
+    public function updateBook(Request $req)
+    {
+        try {
+            $book = Books::find($req->book_id);
+
+            // Check if book exists
+            if (!$book) {
+                $respond = 'error';
+                $message = 'Book not found';
+                if($req->input('page') == 'books'){
+                    return redirect('/book/view')->with($respond, $message);
+                }elseif($req->input('page') == 'book-by-author'){
+                    return redirect('/author/view')->with($respond, $message);
+                }
+            }
+
+            // Check what the user submitted
+            if ($req->input('submit') == 'save') {
+                // Basic validation (optional, you can customize)
+                $req->validate([
+                    'name' => 'required|string|max:255',
+                    'category' => 'required|exists:category,category_id',
+                    'authors' => 'required|array',
+                    'content' => 'nullable|string',
+                ]);
+
+                $book->title = $req->input('name');
+                $book->category_id = $req->input('category');
+                $book->author_id = array_map('intval', $req->input('authors')); //array map to convert to int not string
+                $book->content = $req->input('content');
+                $book->save();
+
+                $respond = 'success';
+                $message = 'Book is Updated';
+                // return redirect('/book/view')->with('success', 'Book is Updated');
+            } elseif ($req->input('submit') == 'delete') {
+                $book->delete();
+
+                // Check if delete is success
+                if ($book->deleted_at == null) {
+                    $respond = 'error';
+                    $message = 'Invalid action';
+                    // return redirect('/book/view')->with('error', 'Book could not be deleted');
+                } else {
+                    $respond = 'success';
+                    $message = 'Books is Deleted';
+                    // return redirect('/book/view')->with('success', 'Book is Deleted');
+                }
+            } else {
+                $respond = 'error';
+                $message = 'Invalid action';
+                // return redirect('/book/view')->with('error', 'Invalid action');
+            }
+ 
+            // return with existing respond and message
+            if($req->input('page') == 'books'){
+                return redirect('/book/view')->with($respond, $message);
+            }elseif($req->input('page') == 'book-by-author'){
+                $author_id = $req->input('author_id');
+                return redirect('/author/book?id=' . $author_id)
+                 ->with($respond, $message);
+
+            }
+        } catch (\Exception $e) {
+            // Catch any unexpected exception
+            // return redirect('/book/view')->with('error', 'Something went wrong: ' . $e->getMessage());
+
+            //back to last page
+            // return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
+            $respond = 'error';
+            $message = 'Something went wrong: ' . $e->getMessage();
+            if($req->input('page') == 'books'){
+                return redirect('/book/view')->with($respond, $message);
+            }elseif($req->input('page') == 'book-by-author'){
+                return redirect('/author/view')->with($respond, $message);
+            }
         }
     }
 }
