@@ -23,4 +23,10 @@ Route::prefix('book')->group(function () {
 Route::prefix('/author')->group(function () {
     Route::get('/view','App\Http\Controllers\AuthorController@viewAuthor');
     Route::get('/book','App\Http\Controllers\AuthorController@viewBookByAuthor');
+    Route::get('/edit','App\Http\Controllers\AuthorController@editAuthor');
+    Route::post('/update','App\Http\Controllers\AuthorController@updateAuthor');
 });
+
+Route::prefix('category')->group(function () { 
+    Route::get('/view','App\Http\Controllers\CategoryController@viewCategory');
+}); 

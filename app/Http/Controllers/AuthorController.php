@@ -18,9 +18,10 @@ class AuthorController extends Controller
     use SoftDeletes, HasRoles, HasPermissions; 
 
     public function viewAuthor(){
-        $authors = Authors::query()->paginate(20);
+        $authors = Authors::query()
+        ->orderBy('name','asc')
+        ->paginate(20);
 
-        
         return view("author.author", compact("authors"));
     }
 
@@ -35,5 +36,38 @@ class AuthorController extends Controller
         ->paginate(20);
 
         return view("author.book-by-author", compact("books", "author"));
+    }
+
+    public function editAuthor(Request $req){
+        $author = Authors::find($req->id);
+
+        return view("author.edit-author", compact("author"));
+    }
+
+    public function updateAuthor(Request $req){
+        try {
+            $req->validate([
+                'name' => 'required|string|max:255',
+            ]);
+            $author = Authors::find($req->author_id);
+
+            if($req->input('submit') == 'delete'){
+                $author->delete();
+                return redirect('/author/view')->with('success', 'Author deleted successfully');
+            }elseif( $req->input('submit') == 'save'){
+                $author->name = $req->input('name');
+                $author->save();
+                // Redirect Back to Author Pages, with error or success message
+                if($author->name != $req->input('name')){
+                    $message= 'Author name is not Updated';
+                    return redirect()->back()->with('error', $message);
+                }else{
+                    return redirect('/author/view')->with('success', 'Author updated successfully');
+                }
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }   
     }
 }

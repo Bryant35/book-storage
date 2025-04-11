@@ -54,7 +54,7 @@
                     <form action="/book/update" method="post">
                         @csrf
                         {{-- Get Author id (if from book-by-author) --}}
-                        @if($author_id != null)
+                        @if ($author_id != null)
                             <input type="hidden" name="author_id" value="{{ $author_id }}">
                         @endif
                         <input type="hidden" name="page" value="{{ $page }}">
@@ -116,6 +116,7 @@
                                 type="button">
                                 Delete
                             </button>
+                            {{-- Delete Confirmation using Modal --}}
                             <div id="delete-modal" tabindex="-1"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
@@ -141,7 +142,8 @@
                                             <h3 class="mb-5 text-lg font-normal text-gray-500">Are
                                                 you sure you want to delete this product?</h3>
                                             <button type="submit" name="submit"
-                                                class="hover:shadow-form rounded-md bg-[#FA003F] py-2.5 px-5 ms-3 text-sm font-semibold text-white outline-none" value="delete">
+                                                class="hover:shadow-form rounded-md bg-[#FA003F] py-2.5 px-5 ms-3 text-sm font-semibold text-white outline-none"
+                                                value="delete">
                                                 Yes, Delete
                                             </button>
                                             <button data-modal-hide="delete-modal" type="button"
@@ -152,15 +154,11 @@
                                 </div>
                             </div>
 
-                            {{-- <input type="button" name="delete"
-                                class="hover:shadow-form rounded-md bg-[#FA003F] py-3 px-8 text-base font-semibold text-white outline-none"
-                                value="Delete"> --}}
-
                             <button type="submit" name="submit"
-                                class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none" value="save">
+                                class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
+                                value="save">
                                 Save
                             </button>
-
                         </div>
                     </form>
                 </div>
@@ -168,6 +166,7 @@
         </div>
     </div>
 
+    {{-- flowbite js --}}
     <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
