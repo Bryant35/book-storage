@@ -43,11 +43,14 @@ class Books extends Model
     /**
      * Get relationship with Authors
      */
-    // public function author()
+    // public function getAuthorsAttribute()
     // {
-    //     return $this->hasMany(Authors::class, 'author_id', 'author_id');
+    //     return Authors::whereIn('author_id', $this->author_id ?? [])->get();
     // }
 
+    /**
+     * Relationship with Authors
+     */
     public function getAuthorsAttribute()
     {
         // Retrieve the author names from the authors table where author_id is in the author_id array
@@ -55,6 +58,7 @@ class Books extends Model
             ->pluck('name')  // Get an array of author names
             ->toArray();  // Convert it to an array
     }
+
 
     /**
      * Get all books with their details
@@ -78,6 +82,11 @@ class Books extends Model
         return $books;
     }
 
+    /**
+     * get 1 book by id
+     * @param mixed $book_id
+     * @return Books|null
+     */
     public static function getBookById($book_id)
     {
         // create join book and author and category

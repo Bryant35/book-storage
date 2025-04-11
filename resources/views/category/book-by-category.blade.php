@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Category - View</title>
+
+    <title>Book Lists</title>
 
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
@@ -18,15 +19,16 @@
     <div class="flex bg-gray-100 text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
+            <h1 class="text-2xl font-bold mb-4">Buku dengan Kategori <span class="underline">{{ $category->name }}</span></h1>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 {{-- Judul Tabel --}}
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Nama Kategori
+                            Judul
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Liat Judul-Judul Buku
+                            Penulis
                         </th>
                         @if (Auth::check() && Auth::user()->hasRole('Admin'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
@@ -38,42 +40,41 @@
 
                 {{-- Isi Tabel --}}
                 <tbody class="divide-y divide-gray-200">
-                    @foreach ($categories as $category)
+                    @foreach ($books as $book)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
 
                             {{-- Judul Buku --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                                {{ $category->name }}</td>
+                                {{ $book->title }}</td>
 
-                            {{-- Kategori Buku --}}
-                            <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                <form action="/category/book" method="GET">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $category->category_id }}">
-                                    <input type="submit" name="view"
-                                        class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
-                                        value="View Book">
-                                </form>
+                            {{-- Penulis Buku dalam array --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                @foreach ($book->authors as $author)
+                                    {{ $author }}@if (!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
                             </td>
                             @if (Auth::check() && Auth::user()->hasRole('Admin'))
-                                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                    {{-- Tombol Edit Kategori --}}
-                                    <form action="/category/edit" method="GET">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $category->category_id }}">
+                                {{-- Tombol Edit --}}
+                                <form action="/book/edit" method="GET">
+                                    @csrf
+                                    <input type="hidden" name="page" value="book-by-category">
+                                    <input type="hidden" name="category_id" value="{{ $category->category_id }}">
+                                    <input type="hidden" name="id" value="{{ $book->book_id }}">
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                         <input type="submit" name="edit"
                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
                                             value="Edit">
-                                    </form>
-                                </td>
+                                </form>
                             @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <div class="mt-3">
-                {{-- Pagination --}}
-                {{ $categories->links() }}
+                {{ $books->links() }}
             </div>
         </div>
     </div>

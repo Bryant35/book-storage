@@ -29,4 +29,7 @@ Route::prefix('/author')->group(function () {
 
 Route::prefix('category')->group(function () { 
     Route::get('/view','App\Http\Controllers\CategoryController@viewCategory');
+    Route::get('/book','App\Http\Controllers\CategoryController@viewBookByCategory');
+    Route::get('/edit','App\Http\Controllers\CategoryController@editViewCategory');
+    Route::post('/update','App\Http\Controllers\CategoryController@updateCategory');
 }); 

@@ -39,25 +39,31 @@ class BookController extends Controller
         $book_id = $req->input('id');
         $page = $req->input('page');
         $author_id = '';
+        $category_id = '';
+        // get id author or category from previous page(Using if, so the page can be used for multiple page)
         if($req->input('author_id') != null){
             $author_id = $req->input('author_id');
         }
-        
+        if($req->input('category_id') != null){
+            $category_id = $req->input('category_id');
+        }
+
         // Go To Model
         $book = Books::getBookById($book_id);
 
-        //Call all authors and categories
+        //Call all authors and categories list
         $authors = Authors::all();
         $categories = Category::all();
 
         //Validate user
         if(Auth::check()){
-            return view('book.edit-book', compact('book', 'categories','authors', 'page', 'author_id'));
+            return view('book.edit-book', compact('book', 'categories','authors', 'page', 'author_id', 'category_id'));
         }else{
             return redirect('/book/view')->with('error', 'You do not have access to this page.');
         }
 
         //Has Permission edit book
+        //Comment this if you want to use the permission
         // if (Auth::user()->can('edit book')) {
         //     return view('book.edit-book', compact('book', 'categories','authors'));
         // } else {
@@ -129,7 +135,11 @@ class BookController extends Controller
                 $author_id = $req->input('author_id');
                 return redirect('/author/book?id=' . $author_id)
                  ->with($respond, $message);
+            }elseif($req->input('page') == 'book-by-category'){
+                $category_id = $req->input('category_id');
 
+                return redirect('/category/book?id=' . $category_id)
+                 ->with($respond, $message);
             }
         } catch (\Exception $e) {
             // Catch any unexpected exception

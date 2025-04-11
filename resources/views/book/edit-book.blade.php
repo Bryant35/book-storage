@@ -44,7 +44,7 @@
 
 </head>
 
-<body class="bg-gray-100 ">
+<body class="">
     <div class="flex text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="mx-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
@@ -57,6 +57,11 @@
                         @if ($author_id != null)
                             <input type="hidden" name="author_id" value="{{ $author_id }}">
                         @endif
+                        {{-- Get Category_id  (if from book-by-category)  --}}  
+                        @if ($category_id != null)
+                            <input type="hidden" name="category_id" value="{{ $category_id }}">
+                        @endif
+
                         <input type="hidden" name="page" value="{{ $page }}">
                         <input type="hidden" name="book_id" value="{{ $book->book_id }}">
                         <div class="mb-5">
@@ -80,8 +85,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            {{-- <input type="dropdown" name="category" id="category" placeholder="{{ $book->category[1] }}"
-                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" /> --}}
+
                         </div>
                         <div class="mb-5">
                             <label for="select-author" class="block mb-2 text-sm font-medium text-gray-700">Select
@@ -110,6 +114,7 @@
                                 class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">{!! $book->content !!}</textarea>
                         </div>
 
+                        {{-- Button Finish --}}
                         <div class="flex justify-between">
                             <button data-modal-target="delete-modal" data-modal-toggle="delete-modal"
                                 class="hover:shadow-form rounded-md bg-[#FA003F] py-3 px-8 text-base font-semibold text-white outline-none"
@@ -154,6 +159,7 @@
                                 </div>
                             </div>
 
+                            {{-- Save/Update Button --}}
                             <button type="submit" name="submit"
                                 class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
                                 value="save">

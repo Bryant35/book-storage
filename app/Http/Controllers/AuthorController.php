@@ -25,9 +25,10 @@ class AuthorController extends Controller
         return view("author.author", compact("authors"));
     }
 
+    /**
+     * Filter by author
+     */
     public function viewBookByAuthor(Request $req){
-        // $author = $req->query('author_id'); // get from URL
-        
         $author = Authors::find($req->id);
         
         $books = Books::with('category')
@@ -38,12 +39,19 @@ class AuthorController extends Controller
         return view("author.book-by-author", compact("books", "author"));
     }
 
-    public function editAuthor(Request $req){
+    /**
+     * Show the form for editing the specified author.
+     * Fill the form with the choosen author data
+     */
+    public function editViewAuthor(Request $req){
         $author = Authors::find($req->id);
 
         return view("author.edit-author", compact("author"));
     }
 
+    /**
+     * Save or Delete the Author
+     */
     public function updateAuthor(Request $req){
         try {
             $req->validate([
