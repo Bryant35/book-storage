@@ -65,7 +65,7 @@ class Books extends Model
      *
      * @return string
      */
-    public static function getBooksWithDetails($perPage = 20)
+    public static function getBooksWithDetails()
     {
         // create join book and author and category
         $books = Books::join('authors', 'books.author_id', '=', 'authors.author_id')

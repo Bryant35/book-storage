@@ -25,14 +25,14 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Judul
+                            Title
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Kategori
+                            Category
                         </th>
                         @if (Auth::check() && Auth::user()->hasRole('Admin'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                Aksi
+                                Action
                             </th>
                         @endif
                     </tr>

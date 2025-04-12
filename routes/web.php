@@ -14,17 +14,23 @@ Route::prefix('/validate')->group(function () {
 Route::prefix('book')->group(function () {
     Route::get('/view', 'App\Http\Controllers\BookController@index');
     Route::get('/edit', 'App\Http\Controllers\BookController@bookEditView');
-    // Route::get('/editForm', function(){
-    //     return view('book.edit-book');
-    // });
+    Route::get('/create', 'App\Http\Controllers\BookController@bookCreateView');
     Route::post('/update', 'App\Http\Controllers\BookController@updateBook');
+    Route::post('/save','App\Http\Controllers\BookController@addBook');
 });
 
 Route::prefix('/author')->group(function () {
+    Route::get('/', function () {
+        return redirect('/author/view');
+    });
     Route::get('/view','App\Http\Controllers\AuthorController@viewAuthor');
     Route::get('/book','App\Http\Controllers\AuthorController@viewBookByAuthor');
     Route::get('/edit','App\Http\Controllers\AuthorController@editAuthor');
     Route::post('/update','App\Http\Controllers\AuthorController@updateAuthor');
+    Route::get('/create', function(){
+        return view('author.create-author');
+    });
+    Route::post('/save','App\Http\Controllers\AuthorController@newAuthor');
 });
 
 Route::prefix('category')->group(function () { 
@@ -32,4 +38,9 @@ Route::prefix('category')->group(function () {
     Route::get('/book','App\Http\Controllers\CategoryController@viewBookByCategory');
     Route::get('/edit','App\Http\Controllers\CategoryController@editViewCategory');
     Route::post('/update','App\Http\Controllers\CategoryController@updateCategory');
+    Route::get('/create', function(){
+        return view('category.create-category');
+    });
+    Route::post('/save','App\Http\Controllers\CategoryController@addCategory');
 }); 
+

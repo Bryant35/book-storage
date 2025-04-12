@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Book Lists</title>
+    <title>Book Lists - {{$category->name}}</title>
 
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
@@ -19,20 +19,20 @@
     <div class="flex bg-gray-100 text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
-            <h1 class="text-2xl font-bold mb-4">Buku dengan Kategori <span class="underline">{{ $category->name }}</span></h1>
+            <h1 class="text-2xl font-bold mb-4">Books with <span class="underline">{{ $category->name }}</span> Category</h1>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 {{-- Judul Tabel --}}
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Judul
+                            Title
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Penulis
+                            Author
                         </th>
                         @if (Auth::check() && Auth::user()->hasRole('Admin'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                Aksi
+                                Action
                             </th>
                         @endif
                     </tr>

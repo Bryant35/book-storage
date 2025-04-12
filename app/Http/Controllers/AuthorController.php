@@ -74,8 +74,28 @@ class AuthorController extends Controller
                 }
             }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
         }   
+    }
+
+    public function newAuthor(Request $req){   
+        try{
+            $author = $req->input('name');
+            //Check if author already exists
+            if(Authors::where('name', $author)->first()){
+                return redirect()->back()->with('error', 'Author already exists');
+            }else{
+                $req->validate([
+                    'name' => 'required|string|max:255',
+                ]);
+                Authors::create([
+                    'name'=> $author,
+                ]);
+                return redirect('')->with('success','');
+            }
+        }catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }
     }
 }

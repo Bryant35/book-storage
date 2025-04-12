@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit Author - {{$author->name}}</title>
+    <title>Edit Author - {{ $author->name }}</title>
 
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
@@ -12,12 +13,14 @@
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body class="bg-gray-100">
     {{-- Navbar --}}
     <div class="flex text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="mx-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
-            <h2 class="text-2xl font-bold uppercase"> Edit Author <span class="underline">{{ $author->name }}</span> </h2>
+            <h2 class="text-2xl font-bold uppercase"> Edit Author <span class="underline">{{ $author->name }}</span>
+            </h2>
             <div class="flex justify-items-start p-8">
                 <div class="w-full max-w-[550px]">
                     <form action="/author/update" method="post">
@@ -39,8 +42,15 @@
                                 type="button">
                                 Delete
                             </button>
+                            
+                            {{-- Save Button --}}
+                            <button type="submit" name="submit"
+                                class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
+                                value="save">
+                                Save
+                            </button>
 
-                            {{-- Delete Confirmation using Modal --}}
+                            {{-- Delete Confirmation using Modal, Modal placed after save button code, so if press enter it will be saved --}}
                             <div id="delete-modal" tabindex="-1"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
@@ -66,7 +76,8 @@
                                             <h3 class="mb-5 text-lg font-normal text-gray-500">Are
                                                 you sure you want to delete this Author?</h3>
                                             <button type="submit" name="submit"
-                                                class="hover:shadow-form rounded-md bg-[#FA003F] py-2.5 px-5 ms-3 text-sm font-semibold text-white outline-none" value="delete">
+                                                class="hover:shadow-form rounded-md bg-[#FA003F] py-2.5 px-5 ms-3 text-sm font-semibold text-white outline-none"
+                                                value="delete">
                                                 Yes, Delete
                                             </button>
                                             <button data-modal-hide="delete-modal" type="button"
@@ -77,15 +88,6 @@
                                 </div>
                             </div>
 
-                            {{-- <input type="button" name="delete"
-                                class="hover:shadow-form rounded-md bg-[#FA003F] py-3 px-8 text-base font-semibold text-white outline-none"
-                                value="Delete"> --}}
-
-                            <button type="submit" name="submit"
-                                class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none" value="save">
-                                Save
-                            </button>
-
                         </div>
                     </form>
                 </div>
@@ -95,4 +97,5 @@
 
     <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
 </body>
+
 </html>

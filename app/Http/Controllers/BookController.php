@@ -11,11 +11,13 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
     use HasRoles, HasPermissions, HasRoles;
     use SoftDeletes;
+
 
     /**
      * Display a listing of the Books.
@@ -154,6 +156,37 @@ class BookController extends Controller
             }elseif($req->input('page') == 'book-by-author'){
                 return redirect('/author/view')->with($respond, $message);
             }
+        }
+    }
+
+    public function bookCreateView(){
+        //Call all authors and categories list
+        $authors = Authors::all();
+        $categories = Category::all();
+
+        return view('book.create-book', compact('categories','authors'));
+    }
+
+    public function addBook(Request $req){
+        $validator = Validator::make($req->all(), [
+            'name'=> 'required|string|max:255',
+            'category' => 'required|exists:category,category_id',
+            'authors' => 'required|array',
+            'content' => 'nullable|string',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        try {
+            $book = Books::create([
+                'title' => $req->input('name'),
+                'category_id' => $req->input('category'),
+                'author_id' => array_map('intval', $req->input('authors')), //array map to convert to int not string
+                'content' => $req->input('content'),
+            ]);
+            return redirect('/book/view')->with('success', 'Book is Created');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
         }
     }
 }

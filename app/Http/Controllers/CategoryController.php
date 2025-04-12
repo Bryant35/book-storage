@@ -113,4 +113,25 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    /** Create new Category */
+    public function addCategory(Request $req){
+        try {
+            $category = $req->input('name');
+            //Check if category already exists
+            if (Category::where('name', $category)->first()) {
+                return redirect()->back()->with('error', 'Category already exists');
+            } else {
+                $req->validate([
+                    'name' => 'required|string|max:255',
+                ]);
+                Category::create([
+                    'name' => $category,
+                ]);
+                return redirect('/category/view')->with('success', 'Category created successfully');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 }

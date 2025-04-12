@@ -20,21 +20,29 @@
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
+                    <a href="/book/create"
+                    title="Add Book"
+                        class="text-white text-xl w-8 h-8 bg-blue-700 hover:bg-blue-800 shadow-lg rounded-full flex items-center justify-center opacity-75">
+                            +
+                    </a>
+                </div>
+
                 {{-- Judul Tabel --}}
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Judul
+                            Title
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Penulis
+                            Author
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Kategori
+                            Category
                         </th>
                         @if (Auth::check() && Auth::user()->hasRole('Admin'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                Aksi
+                                Action
                             </th>
                         @endif
                     </tr>

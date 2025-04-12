@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Category - View</title>
+    <title>Category - List</title>
 
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
@@ -19,18 +19,25 @@
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
+                    <a href="/category/create"
+                        title="Add Category"
+                        class="text-white text-xl w-8 h-8 bg-blue-700 hover:bg-blue-800 shadow-lg rounded-full flex items-center justify-center opacity-75">
+                            +
+                    </a>
+                </div>
                 {{-- Judul Tabel --}}
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Nama Kategori
+                            Category Name
                         </th>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                            Liat Judul-Judul Buku
+                            View Book Titles
                         </th>
                         @if (Auth::check() && Auth::user()->hasRole('Admin'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                Aksi
+                                Action
                             </th>
                         @endif
                     </tr>
