@@ -23,13 +23,48 @@
                 </div>
             </div>
         </a>
-        <a href="/category/view" class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('category*') ? 'bg-gray-100' : '' }}">
+        <a href="/category/view"
+            class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('category*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/category.png') }}" alt="" class="p-1" />
 
             <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                 <div
                     class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
                     Categories <span class="text-gray-400"></span>
+                </div>
+            </div>
+        </a>
+        <hr>
+        <a href="/user"
+            class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('user*') ? 'bg-gray-100' : '' }}">
+            <img src="{{ asset('imgs/user-manage.png') }}" alt="" class="p-1" />
+
+            <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                <div
+                    class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    User Management <span class="text-gray-400"></span>
+                </div>
+            </div>
+        </a>
+        <a href="/role"
+            class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('role*') ? 'bg-gray-100' : '' }}">
+            <img src="{{ asset('imgs/role-manage.png') }}" alt="" class="p-1" />
+
+            <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                <div
+                    class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    Role Management <span class="text-gray-400"></span>
+                </div>
+            </div>
+        </a>
+        <a href="/audit-log"
+            class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('audit-log*') ? 'bg-gray-100' : '' }}">
+            <img src="{{ asset('imgs/audit-log.png') }}" alt="" class="p-1" />
+
+            <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                <div
+                    class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    Audit Log <span class="text-gray-400"></span>
                 </div>
             </div>
         </a>

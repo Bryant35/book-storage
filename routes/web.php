@@ -44,3 +44,6 @@ Route::prefix('category')->group(function () {
     Route::post('/save','App\Http\Controllers\CategoryController@addCategory');
 }); 
 
+Route::prefix('/user')->group(function () {
+    Route::get('','App\Http\Controllers\UserController@index');
+});
