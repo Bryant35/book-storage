@@ -29,7 +29,7 @@ class BookController extends Controller
         if(Auth::check()){
             return view('book.books', compact('books'));
         }else{
-            return view('welcome', compact('books'));
+            return view('book.books', compact('books'));
         }
     }
 

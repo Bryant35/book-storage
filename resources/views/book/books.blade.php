@@ -20,6 +20,7 @@
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                @if(Auth::check() && Auth::user()->hasRole('Admin'))
                 <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
                     <a href="/book/create"
                     title="Add Book"
@@ -27,6 +28,7 @@
                             +
                     </a>
                 </div>
+                @endif
 
                 {{-- Judul Tabel --}}
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">

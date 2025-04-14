@@ -43,4 +43,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Session::class);
     }
+
+    //relattionship with roles (1 roles can have many users)
+    // and 1 user can have many roles
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id');
+    // }
 }
