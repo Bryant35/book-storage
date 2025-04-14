@@ -34,7 +34,9 @@
                 </div>
             </div>
         </a>
-        <hr>
+
+        {{-- Requirement 2 --}}
+        {{-- <hr>
         <a href="/user"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('user*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/user-manage.png') }}" alt="" class="p-1" />
@@ -67,11 +69,11 @@
                     Audit Log <span class="text-gray-400"></span>
                 </div>
             </div>
-        </a>
+        </a> --}}
     </nav>
 
     <div class="flex flex-col items-center gap-y-4 py-10 m-auto">
-        <button class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
+        {{-- <button class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <svg width="24" height="24" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -79,11 +81,21 @@
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M12 16H12.01M12 8V12V8Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-        </button>
-
+        </button> --}}
+        
         <button class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <i class="bi bi-person-circle"></i>
+            <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                <div
+                    class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div class="absolute inset-0 -left-1 flex items-center">
+                        <div class="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    {{ Auth::user() ? Auth::user()->name : 'Guest' }} <span class="text-gray-400"></span>
+                </div>
+            </div>
         </button>
+        @if (Auth::check() && Auth::user()->hasRole('Admin'))
         <a href="/validate/logout"
             class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <i
@@ -100,5 +112,19 @@
                 </div>
             </div>
         </a>
+        @else
+        <a href="/login" class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
+            <img src="{{ asset('imgs/login.png') }}" alt="" class="p-1 h-6 w-6" />
+            <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                <div
+                    class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div class="absolute inset-0 -left-1 flex items-center">
+                        <div class="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    Login <span class="text-gray-400"></span>
+                </div>
+            </div>
+        </a>
+        @endif
     </div>
 </aside>
