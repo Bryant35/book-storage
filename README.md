@@ -11,6 +11,8 @@ Proyek ini adalah sistem manajemen perpustakaan berbasis Laravel. Kamu dapat mel
 #### Clone:
 ```bash
 git clone https://github.com/Bryant35/book-storage
+```
+```bash
 cd book-storage
 ```
 
