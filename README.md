@@ -60,7 +60,7 @@ composer run dev
 
 ---
 
-## 🧪 B. Penggunaan Web
+## B. Penggunaan Web
 
 1. Sebelum login (sebagai guest), hanya dapat melihat list **Book**, **Author**, dan **Category**.
 2. Untuk akses admin, klik tombol **Login** di pojok kiri bawah, lalu masukkan:
