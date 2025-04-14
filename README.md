@@ -1,4 +1,4 @@
-```markdown
+
 # Web Perpustakaan Laravel
 
 Proyek ini adalah sistem manajemen perpustakaan berbasis Laravel. Kamu dapat melihat daftar buku, kategori, dan penulis, serta melakukan CRUD jika login sebagai admin.
@@ -9,7 +9,6 @@ Proyek ini adalah sistem manajemen perpustakaan berbasis Laravel. Kamu dapat mel
 
 ### 1. Clone / Download Repository
 #### Clone:
-```
 ```bash
 git clone https://github.com/Bryant35/book-storage
 cd book-storage
