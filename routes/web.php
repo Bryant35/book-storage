@@ -25,7 +25,7 @@ Route::prefix('/author')->group(function () {
     });
     Route::get('/view','App\Http\Controllers\AuthorController@viewAuthor');
     Route::get('/book','App\Http\Controllers\AuthorController@viewBookByAuthor');
-    Route::get('/edit','App\Http\Controllers\AuthorController@editAuthor');
+    Route::get('/edit','App\Http\Controllers\AuthorController@editViewAuthor');
     Route::post('/update','App\Http\Controllers\AuthorController@updateAuthor');
     Route::get('/create', function(){
         return view('author.create-author');
