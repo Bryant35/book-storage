@@ -25,7 +25,7 @@ Route::prefix('/author')->group(function () {
     });
     Route::get('/view','App\Http\Controllers\AuthorController@viewAuthor');
     Route::get('/book','App\Http\Controllers\AuthorController@viewBookByAuthor');
-    Route::get('/edit','App\Http\Controllers\AuthorController@editAuthor');
+    Route::get('/edit','App\Http\Controllers\AuthorController@editViewAuthor');
     Route::post('/update','App\Http\Controllers\AuthorController@updateAuthor');
     Route::get('/create', function(){
         return view('author.create-author');
@@ -46,4 +46,10 @@ Route::prefix('category')->group(function () {
 
 Route::prefix('/user')->group(function () {
     Route::get('','App\Http\Controllers\UserController@index');
+    Route::get('/create', function(){
+        return view('user-management.create-user');
+    });
+    Route::post('/save','App\Http\Controllers\UserController@addUser');
+    Route::get('/edit','App\Http\Controllers\UserController@editViewUser');
+    Route::post('/update','App\Http\Controllers\UserController@updateUser');
 });

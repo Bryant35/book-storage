@@ -36,7 +36,7 @@
         </a>
 
         {{-- Requirement 2 --}}
-        {{-- <hr>
+        <hr>
         <a href="/user"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('user*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/user-manage.png') }}" alt="" class="p-1" />
@@ -69,7 +69,7 @@
                     Audit Log <span class="text-gray-400"></span>
                 </div>
             </div>
-        </a> --}}
+        </a>
     </nav>
 
     <div class="flex flex-col items-center gap-y-4 py-10 m-auto">
