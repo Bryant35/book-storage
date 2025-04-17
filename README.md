@@ -44,9 +44,9 @@ composer install
 php artisan key:generate
 ```
 
-### 6. Jalankan Migration & Seeder
+### 6. Jalankan Migration & Seeder (Bisa run ulang jika mau tes ulang database(reset database)
 ```bash
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 > Setelah proses selesai, akun admin default akan tersedia:
