@@ -15,32 +15,46 @@ class RoleSeeder extends Seeder
     public function run()
     {
         // Create Permissions
-        $createBooksPermission = Permission::firstOrCreate(['name' => 'create books']);
-        $editBooksPermission = Permission::firstOrCreate(['name' => 'edit books']);
-        $deleteBooksPermission = Permission::firstOrCreate(['name' => 'delete books']);
-        $viewBooksPermission = Permission::firstOrCreate(['name' => 'view books']);
+        // Define features and actions
+        $features = ['book', 'author', 'category', 'user', 'role', 'audit'];
+        $actions = ['view', 'edit', 'create'];
 
-        // Create Roles
-        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
-        $editorRole = Role::firstOrCreate(['name' => 'Editor']);
-        $readerRole = Role::firstOrCreate(['name' => 'Reader']);
+        // 1. Create all permissions
+        foreach ($features as $feature) {
+            foreach ($actions as $action) {
+                Permission::firstOrCreate(['name' => "$action $feature"]);
+            }
+        }
 
-        // Assign Permissions to Roles
-        $adminRole->givePermissionTo([
-            $createBooksPermission,
-            $editBooksPermission,
-            $deleteBooksPermission,
-            $viewBooksPermission
-        ]);
+        // 2. Create roles
+        $admin  = Role::firstOrCreate(['name' => 'Admin']);
+        $editor = Role::firstOrCreate(['name' => 'Editor']);
+        $reader = Role::firstOrCreate(['name' => 'Reader']);
 
-        $editorRole->givePermissionTo([
-            $editBooksPermission,
-            $createBooksPermission,
-            $viewBooksPermission
-        ]);
+        // 3. Define permissions per role
 
-        $readerRole->givePermissionTo([
-            $viewBooksPermission
-        ]);
+        // Admin Permissions
+        $adminPermissions = [
+            'create book', 'create author', 'create category', 'create user',
+            'edit role', 'edit user', 'edit book', 'edit author', 'edit category',
+            'view audit', 'view user', 'view role', 'view book', 'view author', 'view category',
+        ];
+
+        // Editor Permissions
+        $editorPermissions = [
+            'create book', 'create author', 'create category',
+            'edit book', 'edit author', 'edit category',
+            'view user', 'view role', 'view audit',
+        ];
+
+        // Reader Permissions
+        $readerPermissions = [
+            'view book', 'view author', 'view category',
+        ];
+
+        // 4. Assign permissions to roles
+        $admin->syncPermissions($adminPermissions);
+        $editor->syncPermissions($editorPermissions);
+        $reader->syncPermissions($readerPermissions);
     }
 }

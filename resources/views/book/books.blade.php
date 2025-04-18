@@ -19,8 +19,10 @@
     <div class="flex bg-gray-100 text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
+            @if(Auth::check() && (Auth::user()->can('create book') || Auth::user()->can('edit book') || Auth::user()->can('view book')))
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                @if(Auth::check() && Auth::user()->hasRole('Admin'))
+                @if(Auth::user()->hasPermissionTo('create book'))
+                {{-- Tombol Tambah --}}
                 <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
                     <a href="/book/create"
                     title="Add Book"
@@ -42,7 +44,7 @@
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                             Category
                         </th>
-                        @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                        @if (Auth::user()->can('edit book' )|| Auth::user()->can('create book'))
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
                                 Action
                             </th>
@@ -71,7 +73,7 @@
                             {{-- Kategori Buku --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                 {{ $book->category_name }}</td>
-                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                            @if (Auth::user()->can('edit book' )|| Auth::user()->can('create book'))
                                 {{-- Tombol Edit --}}
                                 <form action="/book/edit" method="GET">
                                     @csrf
@@ -91,7 +93,11 @@
             <div class="mt-3">
                 {{ $books->links() }}
             </div>
+            @endif
         </div>
     </div>
+
+    {{-- flowbite js --}}
+    <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
 </body>
 </html>

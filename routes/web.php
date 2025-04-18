@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
 
 Route::get('/', 'App\Http\Controllers\BookController@index');
 
@@ -13,10 +14,14 @@ Route::prefix('/validate')->group(function () {
 
 Route::prefix('book')->group(function () {
     Route::get('/view', 'App\Http\Controllers\BookController@index');
+
+    Route::middleware(['can:create book'])->group(function () {
+        Route::get('/create', 'App\Http\Controllers\BookController@bookCreateView');
+        Route::post('/save','App\Http\Controllers\BookController@addBook');
+    });
+
     Route::get('/edit', 'App\Http\Controllers\BookController@bookEditView');
-    Route::get('/create', 'App\Http\Controllers\BookController@bookCreateView');
     Route::post('/update', 'App\Http\Controllers\BookController@updateBook');
-    Route::post('/save','App\Http\Controllers\BookController@addBook');
 });
 
 Route::prefix('/author')->group(function () {
@@ -52,4 +57,12 @@ Route::prefix('/user')->group(function () {
     Route::post('/save','App\Http\Controllers\UserController@addUser');
     Route::get('/edit','App\Http\Controllers\UserController@editViewUser');
     Route::post('/update','App\Http\Controllers\UserController@updateUser');
+});
+
+Route::prefix('/role')->group(function () {
+    Route::get('','App\Http\Controllers\RoleController@indexRoles');
+    Route::get('/edit','App\Http\Controllers\RoleController@editViewRole');
+    Route::get('/create', function(){
+        return view('user-management.create-role');
+    });
 });
