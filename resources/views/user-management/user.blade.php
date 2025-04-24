@@ -18,8 +18,34 @@
     <div class="flex text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="mx-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
+            {{-- Filter & Search --}}
+            @php
+                $sort = request('sort');
+                $order = request('order', 'asc');
+                $search = request('search');
+                $searchField = request('searchField', 'name');
+            @endphp
+
+            <form method="GET" action="{{ url()->current() }}" class="mb-5 flex items-center">
+                <select name="searchField" class="border rounded px-3 py-1 text-sm mx-1">
+                    <option value="name" {{ request('searchField') == 'name' ? 'selected' : '' }}>Name</option>
+                    <option value="username" {{ request('searchField') == 'username' ? 'selected' : '' }}>Username
+                    </option>
+                </select>
+
+                <input type="text" name="search" placeholder="Search {{ request('searchField')}}..." value="{{ request('search') }}"
+                    class="border rounded px-3 py-1 text-sm w-60">
+
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 ms-1 rounded text-sm">
+                    Search
+                </button>
+
+                @if (request('search') || request('searchField'))
+                    <a href="{{ url()->current() }}" class="text-sm text-gray-500 underline ml-2">Reset</a>
+                @endif
+            </form>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                @can('create user')
                     {{-- Tombol Tambah --}}
                     <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
                         <a href="/user/create" title="Add User"
@@ -27,15 +53,13 @@
                             +
                         </a>
                     </div>
-                @endif
+                @endcan
 
-                @php
-                    $sort = request('sort');
-                    $order = request('order', 'asc');
-                @endphp
+
+
 
                 {{-- Judul Tabel --}}
-                {{-- <a href="/user/create" class="bg-green-400 rounded-full m-2 p-2"> + </a> --}}
+
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
@@ -59,11 +83,11 @@
                             {{-- <a href="?sort=role&order=asc">Role</a> --}}
                             Role
                         </th>
-                        @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                        @can('edit user')
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
                                 Action
                             </th>
-                        @endif
+                        @endcan
                     </tr>
                 </thead>
 
@@ -79,7 +103,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                 {{ optional($user->roles)->pluck('name')->join(', ') }}
                             </td>
-                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                            @can('edit user')
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                     {{-- Tombol Edit --}}
                                     <form action="/user/edit" method="GET">
@@ -90,7 +114,7 @@
                                             value="Edit">
                                     </form>
                                 </td>
-                            @endif
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>
@@ -103,6 +127,7 @@
     </div>
 
     {{-- pass OnSense rW4ChBwz --}}
+    {{-- pass Bryant35 t9PZL11w --}}
     @if (session('random_password'))
         <!-- Modal -->
         <div class="fixed inset-0 bg-black opacity-50 z-40"></div>
@@ -128,7 +153,9 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                        <a href="{{session()->forget('random_password')}}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"> Finish </a>
+                        <a href="{{ session()->forget('random_password') }}"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            Finish </a>
                     </div>
                 </div>
             </div>

@@ -24,8 +24,15 @@ class UserController extends Controller
     {
         $sortField = request()->get('sort', 'name'); // default 'name'
         $sortOrder = request()->get('order', 'asc'); // default 'asc'
+        $search = request()->get('search', ''); // default empty
+        $searchField = request()->get('searchField', 'name'); // default 'name'
 
-        $users = User::with('roles')->orderBy($sortField, $sortOrder)->paginate(20);
+        $users = User::with('roles')
+                ->when($search, function ($query) use ($searchField, $search) {
+                    $query->where($searchField, 'like', "%{$search}%");
+                })
+                ->orderBy($sortField, $sortOrder)
+                ->paginate(20);
 
 
         return view("user-management.user", compact("users"));
@@ -120,5 +127,35 @@ class UserController extends Controller
             $user->delete();
             return redirect('/user')->with('success', 'User deleted successfully');
         }
+    }
+
+    /**
+     * Create guest user
+     */
+    public function createGuestUser(Request $req){
+        $name = $req->name;
+        $username = $req->username;
+        // $email = $req->email;
+        $checkUsername = User::where('username', $username)->first();
+        $password = $req->password;
+        if(empty($username) || empty($password)){
+            return redirect()->back()->with('error', 'Data cannot be empty');
+        }
+        if($checkUsername){
+            return redirect()->back()->with('error', 'Username already exists')->withInput([
+                'name' => $name,
+            ]); 
+        }
+
+        $user = User::create([
+            "name"=> $req->name,
+            "username"=> $req->username,
+            "password"=> bcrypt($password),
+        ]);
+        $user->assignRole('Guest');
+
+        return redirect('/book/view')->with([
+            'success' => 'Guest user created successfully'
+        ]);
     }
 }

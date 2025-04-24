@@ -52,7 +52,7 @@
 
     <div class="mt-6 text-center text-sm text-gray-600">
       Don't have an account? 
-      <a href="#" class="text-indigo-600 hover:text-indigo-500 font-medium">Sign up</a>
+      <a href="/user/guest/create" class="text-indigo-600 hover:text-indigo-500 font-medium">Sign up</a>
     </div>
   </div>
 </div>

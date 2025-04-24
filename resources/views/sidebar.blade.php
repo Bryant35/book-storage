@@ -3,6 +3,7 @@
         <img src="{{ asset('imgs/books.png') }}" />
     </div>
     <nav class="flex flex-1 flex-col gap-y-2 pt-5 m-2  min-w-10">
+
         <a href="/book/view"
             class="group relative rounded-xl {{ request()->is('book*') ? 'bg-gray-100' : '' }} p-2 text-blue-600 hover:text-gray-900 hover:bg-gray-100">
             <img src="{{ asset('imgs/book_list.png') }}" alt="" class="p-1" />
@@ -13,6 +14,8 @@
                 </div>
             </div>
         </a>
+
+        @can('view author')
         <a href="/author/view"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('author*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/author.png') }}" alt="" class="p-1" />
@@ -23,6 +26,8 @@
                 </div>
             </div>
         </a>
+        @endcan
+        @can('view category')
         <a href="/category/view"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('category*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/category.png') }}" alt="" class="p-1" />
@@ -34,9 +39,13 @@
                 </div>
             </div>
         </a>
+        @endcan
 
         {{-- Requirement 2 --}}
+        @canany(['view user', 'view role', 'view audit'])
         <hr>
+        @endcanany
+        @can('view user')
         <a href="/user"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('user*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/user-manage.png') }}" alt="" class="p-1" />
@@ -48,6 +57,8 @@
                 </div>
             </div>
         </a>
+        @endcan
+        @can('view role')
         <a href="/role"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('role*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/role-manage.png') }}" alt="" class="p-1" />
@@ -59,6 +70,8 @@
                 </div>
             </div>
         </a>
+        @endcan
+        @can('view audit')
         <a href="/audit-log"
             class="text-gray-400 group relative rounded-xl p-2 hover:text-gray-900 hover:bg-gray-100 {{ request()->is('audit-log*') ? 'bg-gray-100' : '' }}">
             <img src="{{ asset('imgs/audit-log.png') }}" alt="" class="p-1" />
@@ -70,18 +83,10 @@
                 </div>
             </div>
         </a>
+        @endcan
     </nav>
 
     <div class="flex flex-col items-center gap-y-4 py-10 m-auto">
-        {{-- <button class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
-            <svg width="24" height="24" class="h-6 w-6 stroke-current" viewBox="0 0 24 24" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M12 16H12.01M12 8V12V8Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </button> --}}
         
         <button class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <i class="bi bi-person-circle"></i>
@@ -95,7 +100,7 @@
                 </div>
             </div>
         </button>
-        @if (Auth::check() && Auth::user()->hasRole('Admin'))
+        @if (Auth::check() == true)
         <a href="/validate/logout"
             class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <i

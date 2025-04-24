@@ -17,7 +17,7 @@
         @include('sidebar')
         <div class="mx-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                @can('create role')
                     {{-- Tombol Tambah --}}
                     <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
                         <a href="/role/create" title="Add Role"
@@ -25,7 +25,7 @@
                             +
                         </a>
                     </div>
-                @endif
+                @endcan
 
                 @php
                     $sort = request('sort');
@@ -51,11 +51,11 @@
                                 @endif
                             </a>
                         </th>
-                        @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                        @can('edit role')
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
                                 Action
                             </th>
-                        @endif
+                        @endcan
                     </tr>
                 </thead>
 
@@ -68,7 +68,8 @@
                                 {{ $role->id }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                 {{ $role->name }}</td>
-                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                            @can('edit role')
+                                {{-- Judul Buku --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                     {{-- Tombol Edit --}}
                                     <form action="/role/edit" method="GET">
@@ -79,7 +80,7 @@
                                             value="Edit">
                                     </form>
                                 </td>
-                            @endif
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>

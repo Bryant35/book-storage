@@ -30,6 +30,7 @@ class RoleSeeder extends Seeder
         $admin  = Role::firstOrCreate(['name' => 'Admin']);
         $editor = Role::firstOrCreate(['name' => 'Editor']);
         $reader = Role::firstOrCreate(['name' => 'Reader']);
+        $guest = Role::firstOrCreate(['name' => 'Guest']);
 
         // 3. Define permissions per role
 
@@ -44,17 +45,23 @@ class RoleSeeder extends Seeder
         $editorPermissions = [
             'create book', 'create author', 'create category',
             'edit book', 'edit author', 'edit category',
-            'view user', 'view role', 'view audit',
+            'view book', 'view author', 'view category', 'view user', 'view role', 'view audit',
         ];
 
         // Reader Permissions
         $readerPermissions = [
             'view book', 'view author', 'view category',
         ];
+        
+        // Guest Permissions
+        $guestPermissions = [
+            'view book',
+        ];
 
         // 4. Assign permissions to roles
         $admin->syncPermissions($adminPermissions);
         $editor->syncPermissions($editorPermissions);
         $reader->syncPermissions($readerPermissions);
+        $guest->syncPermissions($guestPermissions);
     }
 }

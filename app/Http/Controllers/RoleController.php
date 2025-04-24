@@ -29,7 +29,56 @@ class RoleController extends Controller
         $permissions = Permission::all();
         $role = Role::find($req->id);
         $rolePermissions = $role->permissions; // Collection of Permission objects
-        dd($role, $permissions, $rolePermissions);
-        return view("role-management.edit-role", compact("role", "permissions", "rolePermissions"));
+
+        $grouped = [];
+
+        foreach ($permissions as $permission) {
+            // explode by space: ['view', 'book']
+            [$action, $feature] = explode(' ', $permission->name);
+            $grouped[$feature][] = $permission->name;
+        }
+        
+        return view("role-management.edit-role", compact("role", "permissions", "rolePermissions", "grouped"));
+    }
+
+    public function updateRole(Request $req, Role $role){
+        $role = Role::find($req->role_id);//get role id
+        $permissionsArray = $req->permissions;//get permission array that checked
+
+        // sync permissions
+        $role->syncPermissions($permissionsArray);//input the permissions to the role
+
+        return redirect()->route('role')->with('success', 'Role updated successfully');
+    }
+
+    /**
+     * show create role view (Pass permission data)
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function addRoleView(Request $req){
+        $permissions = Permission::all();
+
+        $grouped = [];
+
+        foreach ($permissions as $permission) {
+            // explode by space: ['view', 'book']
+            [$action, $feature] = explode(' ', $permission->name);
+            $grouped[$feature][] = $permission->name;
+        }
+
+        return view("role-management.create-role", compact("permissions", "grouped"));
+    }
+
+    /**
+     * Creating New Role
+     */
+    public function addRole(Request $req){
+        $role = Role::create(['name' => $req->role_name]);
+        $permissionsArray = $req->permissions;
+
+        // sync permissions
+        $role->syncPermissions($permissionsArray);
+
+        return redirect()->route('role')->with('success', 'Role created successfully');
     }
 }

@@ -19,7 +19,8 @@
         @include('sidebar')
         <div class="ms-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                @can('create author')
+                {{-- Tombol Tambah --}}
                 <div class="mt-8 me-8 absolute fixed top-0 right-0 ">
                     <a href="/author/create"
                     title="Add Author"
@@ -27,7 +28,7 @@
                             +
                     </a>
                 </div>
-                @endif
+                @endcan
 
 
                 {{-- Judul Tabel --}}
@@ -39,11 +40,11 @@
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                             View Book Titles
                         </th>
-                        @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                        @can('edit author')
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
                                 Action
                             </th>
-                        @endif
+                        @endcan
                     </tr>
                 </thead>
 
@@ -66,7 +67,8 @@
                                         value="View Book">
                                 </form>
                             </td>
-                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                            @can('edit author')
+                                
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                     {{-- Tombol Edit --}}
                                     <form action="/author/edit" method="GET">
@@ -77,7 +79,7 @@
                                             value="Edit">
                                     </form>
                                 </td>
-                            @endif
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>

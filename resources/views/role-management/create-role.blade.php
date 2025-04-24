@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit Role - {{ $role->name }}</title>
+    <title>Add New Role</title>
 
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
@@ -18,13 +18,15 @@
     <div class="flex text-gray-900 min-h-screen">
         @include('sidebar')
         <div class="mx-3 my-3 flex-1 bg-white rounded-lg shadow-lg p-4">
-            <h2 class="text-2xl font-bold uppercase">Edit <span class="underline">{{ $role->name }}</span> Permission</h2>
+            <form action="/role/add" method="POST">
+                @csrf
+                <h2 class="content-center"><span class="text-2xl font-bold uppercase">Add Role : </span><input
+                        type="text" class="border border-1 border-gray-400 rounded-lg p-1 mb-1.5" name="role_name"
+                        placeholder="Enter new role name..." required></h2>
 
 
-            <form action="/role/update" method="POST">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500" id="permissions-table">
-                        @csrf
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
@@ -56,30 +58,11 @@
                                     @endphp
 
                                     @foreach (['view', 'edit', 'create'] as $action)
-                                        {{-- php to disable edit role checkbox, because we need at least 1 can edit role --}}
-                                        @php
-                                            $isDisabled =
-                                                $role->name === 'Admin' &&
-                                                $feature === 'role' &&
-                                                in_array($action, ['view', 'edit']);
-                                            $isChecked = in_array(
-                                                $permissionsMap[$action],
-                                                ($rolePermissions ?? collect())->pluck('name')->toArray(),
-                                            );
-                                        @endphp
-
                                         <td class="px-6 py-4 justify-items-center">
                                             <input type="checkbox" name="permissions[]" class="permission-checkbox"
                                                 data-feature="{{ $feature }}" data-action="{{ $action }}"
-                                                value="{{ $permissionsMap[$action] }}" {{ $isChecked ? 'checked' : '' }}
-                                                {{ $isDisabled ? 'disabled' : '' }}>
-
-                                        </td>
-
-                                        @if ($isDisabled && $isChecked)
-                                            <input type="hidden" name="permissions[]"
                                                 value="{{ $permissionsMap[$action] }}">
-                                        @endif
+                                        </td>
                                     @endforeach
                                 </tr>
                             @endforeach
@@ -87,7 +70,6 @@
                     </table>
                 </div>
                 <div class="m-2 mt-4 text-right">
-                    <input type="hidden" name="role_id" value="{{ $role->id }}">
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Save
                         Changes</button>
@@ -118,7 +100,7 @@
                         checkboxes.forEach(cb => {
                             if (cb.dataset.action === 'view') cb.checked = true;
                         });
-                    } else if (action === 'edit' && !e.target.checked) {
+                    }else if (action === 'edit' && !e.target.checked) {
                         // When "edit" is unchecked, uncheck create too
                         checkboxes.forEach(cb => {
                             if (cb.dataset.action === 'create') cb.checked = false;
