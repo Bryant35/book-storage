@@ -17,10 +17,17 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
+        "@tiptap/core": "^2.11.7",
+        "@tiptap/pm": "^2.11.7",
+        "@tiptap/starter-kit": "^2.11.7",
         "bootstrap-icons": "^1.11.3",
-        "flowbite": "^3.1.2"
+        "flowbite": "^3.1.2",
+        "flowbite-typography": "^1.0.5"
     },
     "files.associations": {
         "*.css": "tailwindcss"
+    },
+    "overrides": {
+        "prosemirror-model": "1.19.3"
     }
 }

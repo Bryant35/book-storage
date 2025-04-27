@@ -12,6 +12,10 @@
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
 
+
+    {{-- Flowbite js --}}
+    @vite('resources/js/text-editor.js')
+
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -101,10 +105,25 @@
                         </div>
 
                         {{-- Content CKEditor --}}
-                        <div class="main-container mb-5">
+                        {{-- <div class="main-container mb-5">
                             <textarea id="editor" name="content"
                                 class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">{!! $book->content !!}</textarea>
-                        </div>
+                        </div> --}}
+
+
+                        {{-- flowbite text-editor --}}
+                        @include('book.content-editor')
+
+                        {{-- Hidden input to store the HTML content --}}
+                        <input type="hidden" name="content" id="editor"
+                            value="{{ old('content', $book->content) }}">
+
+                        {{-- Optional error display --}}
+                        @error('content')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <div class="my-5"></div>
 
                         {{-- Button Finish --}}
                         <div class="flex justify-between">
@@ -122,7 +141,7 @@
                             </button>
 
 
-                            {{-- Delete Confirmation using Modal (Div after Save code, so if enter will be saved--}}
+                            {{-- Delete Confirmation using Modal (Div after Save code, so if enter will be saved --}}
                             <div id="delete-modal" tabindex="-1"
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
@@ -166,8 +185,12 @@
         </div>
     </div>
 
+
+
     {{-- flowbite js --}}
     <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/flowbite@latest/dist/flowbite.turbo.js"></script> <!-- if needed -->
+
 
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script>
@@ -180,35 +203,17 @@
     </script>
 
 
-    {{-- CKEditor --}}
-    <script>
-        const {
-            ClassicEditor,
-            Essentials,
-            Bold,
-            Italic,
-            Font,
-            Paragraph
-        } = CKEDITOR;
-        const {
-            FormatPainter
-        } = CKEDITOR_PREMIUM_FEATURES;
 
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NDU0NTI3OTksImp0aSI6ImIwNDBlZmQxLWJjZTYtNDZlZS05MTU3LTY0NmU2YzY1NjBjNyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImNhOWFiNTI0In0.B3HpOk_VB0jO4lHSA2srlL9o1cTFzE35YytT9OB9dLm2GAJvYkpUUDF1h7h2fiLytR4nwK2YB9SIBRLUOFyUkw',
-                plugins: [Essentials, Bold, Italic, Font, Paragraph, FormatPainter],
-                toolbar: [
-                    'undo', 'redo', '|', 'bold', 'italic', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
-                    'formatPainter'
-                ]
-            })
-            .then(editor => {
-                window.editor = editor;
-            })
-            .catch(console.error);
-    </script>
+    {{-- Flowbite Text Editor --}}
+    <script src="{{ asset('js/text-editor.js') }}"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "https://esm.sh/v135/prosemirror-model@1.22.3/es2022/prosemirror-model.mjs": "https://esm.sh/v135/prosemirror-model@1.19.3/es2022/prosemirror-model.mjs", 
+            "https://esm.sh/v135/prosemirror-model@1.22.1/es2022/prosemirror-model.mjs": "https://esm.sh/v135/prosemirror-model@1.19.3/es2022/prosemirror-model.mjs"
+        }
+    }
+</script>
 
 </body>
 

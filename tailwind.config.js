@@ -8,6 +8,13 @@ export default {
     './resources/js/**/*.js',
     './node_modules/flowbite/**/*.js',
   ],
+  safelist: [
+    'bg-black/50',
+    'dark:bg-black/80',
+    'fixed',
+    'inset-0',
+    'z-40',
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -16,6 +23,7 @@ export default {
     },
   },
   plugins: [
+    require('flowbite-typography'),
     forms,
     flowbite,
   ],
