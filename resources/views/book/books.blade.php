@@ -95,7 +95,7 @@
                                 @elsecan('view book')
                                     @cannot('edit book')
                                         {{-- Modal Content --}}
-                                        <td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                             <button type="button" class="text-blue-600 hover:underline"
                                                 data-modal-target="bookModal" data-modal-toggle="bookModal"
                                                 onclick="showBookModal(`{{ $book->title }}`, `{{ $book->content }}`)">
@@ -104,7 +104,6 @@
                                         </td>
                                     @endcannot
                                 @endcan
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -30,11 +30,17 @@
                         <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                             Category
                         </th>
-                        @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                        @can('edit book')
                             <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
                                 Action
                             </th>
-                        @endif
+                        @elsecan('view book')
+                            @cannot('edit book')
+                                <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
+                                    Content
+                                </th>
+                            @endcannot
+                        @endcan
                     </tr>
                 </thead>
 
@@ -42,15 +48,16 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($books as $book)
                         <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
-
                             {{-- Judul Buku --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                                {{ $book->title }}</td>
+                                {{ $book->title }}
+                            </td>
 
                             {{-- Kategori Buku --}}
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                {{ $book->category->name }}</td>
-                            @if (Auth::check() && Auth::user()->hasRole('Admin'))
+                                {{ $book->category->name }}
+                            </td>
+                            @can('edit book')
                                 {{-- Tombol Edit --}}
                                 <form action="/book/edit" method="GET">
                                     @csrf
@@ -61,9 +68,20 @@
                                         <input type="submit" name="edit"
                                             class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
                                             value="Edit">
+                                    </td>
                                 </form>
-                            @endif
-                            </td>
+                            @elsecan('view book')
+                                @cannot('edit book')
+                                    {{-- Modal Content --}}
+                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                        <button type="button" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:underline"
+                                            data-modal-target="bookModal" data-modal-toggle="bookModal"
+                                            onclick="showBookModal(`{{ $book->title }}`, `{{ $book->content }}`)">
+                                            Show Content
+                                        </button>
+                                    </td>
+                                @endcannot
+                            @endcan
                         </tr>
                     @endforeach
                 </tbody>
@@ -73,5 +91,49 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="bookModal" tabindex="-1" aria-hidden="true"
+        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-full bg-black/50">
+        <div class="relative max-w-2xl mx-auto mt-20 bg-white rounded-lg shadow">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal Header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="modalTitle">
+                        Book Title
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                        data-modal-hide="bookModal">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6 space-y-4">
+                    <p id="modalContent" class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        Book content goes here.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- flowbite js --}}
+    <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
+
+    {{-- Modal js every row --}}
+    <script>
+        function showBookModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+        }
+    </script>
+
 </body>
+
 </html>
