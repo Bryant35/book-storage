@@ -88,7 +88,9 @@
 
     <div class="flex flex-col items-center gap-y-4 py-10 m-auto">
         
-        <button class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
+        
+        @if (Auth::check() == true)
+        <a href="/profile" class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <i class="bi bi-person-circle"></i>
             <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
                 <div
@@ -99,8 +101,7 @@
                     {{ Auth::user() ? Auth::user()->name : 'Guest' }} <span class="text-gray-400"></span>
                 </div>
             </div>
-        </button>
-        @if (Auth::check() == true)
+        </a>
         <a href="/validate/logout"
             class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <i
@@ -118,6 +119,18 @@
             </div>
         </a>
         @else
+        <a href="/login" class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
+            <i class="bi bi-person-circle"></i>
+            <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">
+                <div
+                    class="relative whitespace-nowrap rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 drop-shadow-lg">
+                    <div class="absolute inset-0 -left-1 flex items-center">
+                        <div class="h-2 w-2 rotate-45 bg-white"></div>
+                    </div>
+                    {{ Auth::user() ? Auth::user()->name : 'Guest' }} <span class="text-gray-400"></span>
+                </div>
+            </div>
+        </a>
         <a href="/login" class="group relative rounded-xl p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100">
             <img src="{{ asset('imgs/login.png') }}" alt="" class="p-1 h-6 w-6" />
             <div class="absolute inset-y-0 left-12 hidden items-center group-hover:flex">

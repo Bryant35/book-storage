@@ -10,7 +10,8 @@ use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use App\Models\User;
-use DB;
+use DB;use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 
 class UserController extends Controller
 {

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Books;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -27,7 +28,7 @@ class AuthController extends Controller
         // Check if the username exists
         if (! $user) {
             flash()->error('Username atau Password Salah!');
-
+            
             return redirect()->back()->withInput();
         }
         // Check if the password is correct
@@ -37,6 +38,7 @@ class AuthController extends Controller
             } else {
                 Auth::login($user);
             }
+
             flash()->success('Login Berhasil!');
 
             return redirect('/book/view');
@@ -47,7 +49,6 @@ class AuthController extends Controller
 
             return redirect()->back()->withInput();
         }
-
     }
 
     /**
@@ -64,5 +65,26 @@ class AuthController extends Controller
 
             return redirect('/');
         }
+    }
+
+
+    /**
+     * Forget Password
+     */
+    public function forgetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+        $user = User::where('email', $request->input('email'))->first();
+        // dd($user);
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('success', __($status))
+            : back()->withErrors(['email' => __($status)]);
     }
 }
