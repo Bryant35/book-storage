@@ -186,6 +186,14 @@ Route::prefix('email')->group(function () {
             return response()->json(['message' => 'Email already verified.'], 400);
         }
 
+        // Check if the new email is already used by another user
+        if( $user->email !== $request->email) {
+            $existingUser = \App\Models\User::where('email', $request->email)->first();
+            if ($existingUser && $existingUser->hasVerifiedEmail()) {
+                return response()->json(['message' => 'Email already verified by another user.'], 400);
+            }
+        }
+
         // Update the user's email in the database
         $user->forceFill([
             'email' => $request->email
